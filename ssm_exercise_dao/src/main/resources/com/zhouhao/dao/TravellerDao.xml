@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="com.zhouhao.dao.TravellerDao">
+    <select id="getByOrderId" resultType="com.zhouhao.entity.Traveller">
+        select t.*
+        from orders o
+         right join order_traveller ot on o.id = ot.orderid
+         right join traveller t on ot.travellerid = t.id
+    </select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="com.zhouhao.dao.OrderDao">
+
+    <resultMap id="order" type="com.zhouhao.entity.Order">
+        <association property="product" select="com.zhouhao.dao.ProductDao.getById" column="productId" javaType="com.zhouhao.entity.Product"></association>
+        <association property="member" select="com.zhouhao.dao.MemberDao.getById" column="memberId" javaType="com.zhouhao.entity.Member"></association>
+    </resultMap>
+
+    <resultMap id="orderById" type="com.zhouhao.entity.Order">
+        <association property="product" select="com.zhouhao.dao.ProductDao.getById" column="productId" javaType="com.zhouhao.entity.Product"></association>
+        <association property="member" select="com.zhouhao.dao.MemberDao.getById" column="memberId" javaType="com.zhouhao.entity.Member"></association>
+        <association property="travellers" select="com.zhouhao.dao.TravellerDao.getByOrderId" column="id" javaType="java.util.List"></association>
+    </resultMap>
+
+    <select id="getList" resultType="com.zhouhao.entity.Order" resultMap="order">
+        select * from orders
+    </select>
+
+    <select id="getDetail" resultType="com.zhouhao.entity.Order" resultMap="orderById">
+        select * from orders where id = #{id}
+    </select>
+</mapper>

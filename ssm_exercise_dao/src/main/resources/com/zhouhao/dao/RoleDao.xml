@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="com.zhouhao.dao.RoleDao">
+    <resultMap id="getByUserId" type="com.zhouhao.entity.Role">
+        <result property="id" column="id"></result>
+        <association property="permissions" javaType="java.util.List" column="id" select="com.zhouhao.dao.PermissionDao.getByRoleId"></association>
+    </resultMap>
+
+    <select id="getByUserId" resultMap="getByUserId">
+        select role.*
+        from Users_role, ROLE
+        where users_role.roleid = role.id
+          and users_role.userid = #{id}
+    </select>
+
+    <select id="roleList" resultMap="getByUserId">
+        select * from role
+    </select>
+
+    <insert id="save">
+        insert into role(rolename, roledesc) values(#{roleName}, #{roleDesc})
+    </insert>
+
+    <select id="findRoleById" resultMap="getByUserId">
+        select * from role where id = #{id}
+    </select>
+
+    <select id="addPermissionToRole">
+        insert into role_permission values(#{roleId}, #{permissionId})
+    </select>
+</mapper>

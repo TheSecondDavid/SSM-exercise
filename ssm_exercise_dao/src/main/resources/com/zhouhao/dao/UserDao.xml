@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="com.zhouhao.dao.UserDao">
+
+    <resultMap id="userByName" type="com.zhouhao.entity.UserInfo">
+        <result property="id" column="id"></result>
+        <association property="roles" select="com.zhouhao.dao.RoleDao.getByUserId" column="id" javaType="java.util.List"></association>
+    </resultMap>
+
+    <select id="getByUsername" resultMap="userByName">
+        select * from USERS where username = #{username}
+    </select>
+
+    <select id="getList" resultMap="userByName">
+        select * from users
+    </select>
+
+    <select id="findById" resultMap="userByName">
+        select * from users where id = #{id}
+    </select>
+
+    <insert id="save">
+        insert into users(EMAIL, USERNAME, PASSWORD, PHONENUM, STATUS) values (#{email}, #{username}, #{password}, #{phoneNum}, #{status})
+    </insert>
+
+    <insert id="addRoletoUser">
+        insert into users_role values (#{userId}, #{roleId})
+    </insert>
+</mapper>
